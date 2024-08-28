@@ -5,7 +5,7 @@ import CreatableSelect from "react-select/creatable";
 
 const CreateJobs = () => {
     const [selectedOption, setSelectedOption] = useState(null)
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const onSubmit = (data) => { 
     data.skills = selectedOption;
     // console.log(data);
@@ -16,8 +16,12 @@ const CreateJobs = () => {
     })
     .then(res => res.json())
     .then((result) => {
-      console.log(result)
-    })
+      console.log(result);
+      if(result.acknowledged ===true){
+        alert("Job Posted Successfully!")
+      }
+      reset()
+    });
   };
   
   const options = [

@@ -38,7 +38,7 @@ async function run() {
         body.createAt = new Date();
         const result = await jobsCollections.insertOne(body);
         if (result.insertedId){
-            returnres.status(200).send(result);
+            return res.status(200).send(result);
         }else{
             return res.status(404).send({
                 message: "can not insert! try again later",
@@ -52,6 +52,13 @@ async function run() {
     app.get("/all-jobs", async(req, res) =>{
         const jobs = await jobsCollections.find({}).toArray()
         res.send(jobs);
+    })
+
+
+    //get jobs by email
+    app.get("/myJobs/:email", async(req, res) =>{
+       const jobs = await jobsCollections.find({postedBy : req.params.email}).toArray();
+       res.send(jobs)
     })
 
 
