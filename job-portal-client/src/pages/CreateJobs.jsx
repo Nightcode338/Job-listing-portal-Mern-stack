@@ -49,7 +49,7 @@ const CreateJobs = () => {
         <div className='create-job-flex'>
             <div className='lg:w-1/2 w-full'>
             <label className='block mb-2 text-lg'>Job Title</label>
-            <input type="text" defaultValue={"Web developer"} 
+            <input type="text" placeholder='Eg: Web Developer' 
             {...register("jobTitle")}  className='create-job-input'/>
             </div>
             <div className='lg:w-1/2 w-full'>
