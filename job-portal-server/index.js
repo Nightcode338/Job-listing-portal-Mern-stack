@@ -8,10 +8,6 @@ app.use(express.json())
 app.use(cors())
 
 
-//user:abdulrasheedbello338
-//pass:t9qQyDEhY6txbEO2
-
-
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@job-portal-database.httqs.mongodb.net/?retryWrites=true&w=majority&appName=job-portal-database`;
 
@@ -54,13 +50,21 @@ async function run() {
         res.send(jobs);
     })
 
+    //get single job using id
+    app.get("/all-jobs/:id", async(req, res) => {
+      const id = req.params.id;
+      const job = await jobsCollections.findOne({
+        _id: new ObjectId(id)
+      }) 
+      res.send(job)
+    })
+
 
     //get jobs by email
     app.get("/myJobs/:email", async(req, res) =>{
        const jobs = await jobsCollections.find({postedBy : req.params.email}).toArray();
        res.send(jobs)
     })
-
 
     // delete a job
     app.delete("/job/:id", async(req, res) => {
@@ -70,10 +74,27 @@ async function run() {
         res.send(result)
     })
 
+    //update jobs
+
+    app.patch("/update-job/:id", async(req, res) => {
+      const id = req.params.id;
+      const jobData = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true};
+      const updateDoc = {
+      $set: {
+        ...jobData
+      },
+    }; 
+
+    const result = await jobsCollections.updateOne(filter, updateDoc, options);
+    res.send(result)
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("You successfully connected to MongoDB");
+    console.log("Connection to the Database is Successful");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
@@ -87,5 +108,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Collecting data from port ${port}`)
 })

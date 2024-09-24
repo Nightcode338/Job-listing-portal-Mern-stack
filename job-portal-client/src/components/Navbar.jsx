@@ -55,7 +55,7 @@ const Navbar = () => {
             </nav>
 
             {/* nav items mobile */}
-            <div className={`px-4 bg-black py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
+            <div className={`px-4 bg-slate-600 py-5 rounded-sm ${isMenuOpen ? "" : "hidden"}`}>
                 <ul>
                     {navItems.map(({ path, title }) => (
                         <li key={path} className='text-base text-white first:text-white py-1'>
